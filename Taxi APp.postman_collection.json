@@ -1,0 +1,267 @@
+{
+	"info": {
+		"_postman_id": "171de9cd-6962-41d3-87eb-747e89190163",
+		"name": "Taxi APp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3775316",
+		"_collection_link": "https://hyipstack.postman.co/workspace/EVO-Workspace~9abe86a8-860b-4283-8daf-ebbf13454135/collection/3775316-171de9cd-6962-41d3-87eb-747e89190163?action=share&source=collection_link&creator=3775316"
+	},
+	"item": [
+		{
+			"name": "getSavedCheckLists",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "driver_id",
+							"value": "132",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://demo.tctran.com.au/en/webservices/getSavedCheckLists",
+					"protocol": "https",
+					"host": [
+						"demo",
+						"tctran",
+						"com",
+						"au"
+					],
+					"path": [
+						"en",
+						"webservices",
+						"getSavedCheckLists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDriverVehicle",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "driver_id",
+							"value": "132",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://demo.tctran.com.au/en/webservices/getDriverVehicle",
+					"protocol": "https",
+					"host": [
+						"demo",
+						"tctran",
+						"com",
+						"au"
+					],
+					"path": [
+						"en",
+						"webservices",
+						"getDriverVehicle"
+					],
+					"query": [
+						{
+							"key": "driver_id",
+							"value": "132",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getVehicleByNumber",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "register_number",
+							"value": "5223",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://demo.tctran.com.au/en/webservices/getVehicleByNumber",
+					"protocol": "https",
+					"host": [
+						"demo",
+						"tctran",
+						"com",
+						"au"
+					],
+					"path": [
+						"en",
+						"webservices",
+						"getVehicleByNumber"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCheckLists",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/totalcaretransport/app/en/webservices/getCheckLists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"totalcaretransport",
+						"app",
+						"en",
+						"webservices",
+						"getCheckLists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createNewCheckList",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "driver_id",
+							"value": "132",
+							"type": "text"
+						},
+						{
+							"key": "driver_checklist[]",
+							"value": "Test1",
+							"type": "text"
+						},
+						{
+							"key": "vehicle_checklist[]",
+							"value": "Test2",
+							"type": "text"
+						},
+						{
+							"key": "vehicle_id",
+							"value": "13",
+							"type": "text"
+						},
+						{
+							"key": "accreditation_number",
+							"value": "11",
+							"type": "text"
+						},
+						{
+							"key": "register_number",
+							"value": "22",
+							"type": "text"
+						},
+						{
+							"key": "odometer",
+							"value": "1315",
+							"type": "text"
+						},
+						{
+							"key": "signature",
+							"value": "AU",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://demo.tctran.com.au/en/webservices/createNewCheckList",
+					"protocol": "https",
+					"host": [
+						"demo",
+						"tctran",
+						"com",
+						"au"
+					],
+					"path": [
+						"en",
+						"webservices",
+						"createNewCheckList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCheckList",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://demo.tctran.com.au/en/webservices/getCheckLists",
+					"protocol": "https",
+					"host": [
+						"demo",
+						"tctran",
+						"com",
+						"au"
+					],
+					"path": [
+						"en",
+						"webservices",
+						"getCheckLists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.app.tctran.com.au/en/webservices/login?email=jemal@tctran.com.au&password=Totalcare5",
+					"protocol": "https",
+					"host": [
+						"www",
+						"app",
+						"tctran",
+						"com",
+						"au"
+					],
+					"path": [
+						"en",
+						"webservices",
+						"login"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "jemal@tctran.com.au"
+						},
+						{
+							"key": "password",
+							"value": "Totalcare5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
