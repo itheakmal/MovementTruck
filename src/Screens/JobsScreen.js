@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { ScrollView, Text, SafeAreaView, TouchableOpacity, RefreshControl } from 'react-native';
+import { ScrollView, Text, SafeAreaView, TouchableOpacity, RefreshControl, View } from 'react-native';
 import StyledTable from '../Components/StyledTable';
 import UserContext from '../Contexts/UserContext';
 import styles from '../Utils/Styles';
@@ -12,7 +12,6 @@ const JobsScreen = () => {
   const { user } = useContext(UserContext);
   const [jobs, setJobs] = useState([])
   useEffect(() => {
-    console.log('useeefcet')
     async function fetchJobs() {
       const { response, status } = await driverJobs(user.id)
       if (status === 'error') {
@@ -46,21 +45,37 @@ const JobsScreen = () => {
   const handlePress = (arg) => {
     console.log(arg)
   }
-  const _jobs = [
-    ['1', '2', '3', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-    ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-    ['1', '2', '3', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-    ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-    ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-    ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })]
-  ];
+  // const _jobs = [
+  //   ['1', '2', '3', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
+  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
+  //   ['1', '2', '3', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
+  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
+  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
+  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })]
+  // ];
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+
+    async function fetchJobs() {
+      const { response, status } = await driverJobs(user.id)
+      if (status === 'error') {
+        // setError(response)
+        console.log('error')
+      } else if (status === 'success') {
+        console.log('response', response)
+        const formatedJobs = response.jobs.map(job => ([job.id, job.client_name, job.pickup_time, job.pickup_address, job.drop_off_time, job.drop_off_address, job.reason, job.acknowledged, job.job_status]))
+
+        setJobs(formatedJobs)
+
+      }
+    }
+    fetchJobs()
+
+    // setTimeout(() => {
+    setRefreshing(false);
+    // }, 2000);
   }, []);
   // const onRefresh = useCallback(() => {
   //   // Implement your data fetching logic here.
@@ -81,13 +96,15 @@ const JobsScreen = () => {
   //   }, 1000); // Adjust the delay as needed
   // }, []);
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
 
       <ScrollView refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       } >
-        <Text style={styles.landingTitle}>Welcome, {user.email}</Text>
-        <StyledTable headers={['Job Number', 'Client Name', 'Pickup Time', 'Pickup Address', 'Drop off Time', 'Drop off Address', 'Reason', 'Acknowledged', 'Job Status']} data={jobs.length ? jobs : []} />
+        {/* <View style={styles.sized}>
+          <Text style={styles.screenTitle}>Welcome, {user.email}</Text>
+        </View> */}
+        <StyledTable data={jobs.length ? jobs : []} headers={['Job Number', 'Client Name', 'Pickup Time', 'Pickup Address', 'Drop off Time', 'Drop off Address', 'Reason', 'Acknowledged', 'Job Status']} />
       </ScrollView>
     </SafeAreaView>
   );

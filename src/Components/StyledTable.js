@@ -29,7 +29,7 @@ const StyledTable = ({ headers, data }) => (
 
 export default StyledTable;
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 0, backgroundColor: '#fff', width: 800 },
+  container: { flex: 1, padding: 16, paddingTop: 0, backgroundColor: '#fff' },
   head: { height: 60, backgroundColor: '#e9e9e9' },
   text: { margin: 6, color: '#000' },
 });

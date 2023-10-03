@@ -9,8 +9,9 @@ import { useNavigation } from '@react-navigation/native';
 import ButtonTable from '../Components/ButtonTable';
 import Input from '../Components/Input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from 'moment';
-import { getChecklist, numberVerify } from '../Services/networkRequests';
+import moment from 'moment-timezone';
+
+import { getChecklist, numberVerify, submitCheckList } from '../Services/networkRequests';
 
 const CheckListScreen = (props) => {
   const { user } = useContext(UserContext);
@@ -47,13 +48,13 @@ const CheckListScreen = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getChecklist()
-      console.log(data)
+      // console.log(data)
       const vehicle_checklist = data.vehicle_checklist.map((item, index) => ({ title: item, id: index, value: false }))
       const driver_checklist = data.driver_checklist.map((item, index) => ({ title: item, id: index, value: false }))
       setChecklist({ vehicle_checklist, driver_checklist })
       setChecklistDriver(driver_checklist)
       setChecklistVehicle(vehicle_checklist)
-      console.log('driver_checklist', driver_checklist)
+      // console.log('driver_checklist', s)
     }
     fetchData()
     // formFields.registrationNumber= user.registration
@@ -62,8 +63,7 @@ const CheckListScreen = (props) => {
   }, [])
 
   const handleChecklistCompletion = async () => {
-    // const currentDate = moment().tz('Australia/Sydney').format('YYYY-MM-DD');
-    const currentDate = moment().format('YYYY-MM-DD');
+    const currentDate = moment().tz('Australia/Sydney').format('YYYY-MM-DD');
     await AsyncStorage.setItem('checklistCompletedDate', currentDate);
     console.log('currentDate', currentDate)
     props.setShowChecklist(false);
@@ -71,8 +71,8 @@ const CheckListScreen = (props) => {
   const handleSubmit = async () => {
     // Handle form submission here
     // let notChecked = []
-console.log('driverCheck', checklistDriver)
-console.log('checklistVehicle', checklistVehicle)
+    console.log('driverCheck', checklistDriver)
+    console.log('checklistVehicle', checklistVehicle)
     const notCheckedDriver = Object.values(checklistDriver).filter(item => !item)
     const notCheckedTruck = Object.values(checklistVehicle).filter(item => !item)
     // const notCheckedTruck = truckCheck.filter(item=>!item)
@@ -104,8 +104,14 @@ console.log('checklistVehicle', checklistVehicle)
       return
     }
 
+    const formSubmit = await submitCheckList({ checklistDriver, checklistVehicle, ...formFields, driver_id: user.id, vehicle_id: user.vehicle_id, accreditation_number: user.accreditation_number })
+    if (formSubmit) {
 
-    handleChecklistCompletion()
+      handleChecklistCompletion()
+    } else {
+      alert('Some error occured, please try again')
+      return
+    }
     // navigation.navigate('Jobs');
 
   };

@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
 
   
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
-    marginBottom: 4,
     marginBottom: 6,
   },
   input: {
@@ -84,6 +83,19 @@ const styles = StyleSheet.create({
   },
   landingTitle: {
     fontSize: 24
+  },
+  screenTitle: {
+    fontSize: 24,
+    color: '#333'
+  },
+  screenText: {
+    color: '#333'
+  },
+  sized: {
+    backgroundColor: '#cd2122',
+    // height: 10,
+    flex: 1,
+    flexDirection: 'column'
   },
   // table: {
   //   borderWidth: 1

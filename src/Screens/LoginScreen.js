@@ -7,6 +7,7 @@ import AuthService from '../Services/AuthService';
 import UserContext from '../Contexts/UserContext';
 import styles from '../Utils/Styles';
 import { validateEmail } from '../Utils/Utils';
+import { getVehicle } from '../Services/networkRequests';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('jemal@tctran.com.au');
@@ -39,9 +40,13 @@ const LoginScreen = () => {
       if (status === 'error') {
         setError(response)
       } else if (status === 'success') {
-        // const newUser = response["registration"] = 98760
-        // return false
-        response.registration = 98765
+        const { data, status } = await getVehicle(response.id)
+        if (status === 'error') {
+          setError(data)
+        } else {
+          response.registration = data.car_number_plate
+          response.vehicle_id = data.id
+        }
         console.log('response', response)
         setUser(response)
         navigation.navigate('Switch');

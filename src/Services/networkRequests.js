@@ -13,6 +13,23 @@ export const login = async (loginObj) => {
         throw error;
     }
 };
+
+// Get driver vehicle
+export const getVehicle = async (driverID) => {
+    console.log('driverID', driverID)
+    const form_data = new FormData
+    form_data.append("driver_id", driverID)
+    console.log(form_data)
+    try {
+        const { data } = await axiosInstanceForm.post(`/getDriverVehicle`, form_data);
+        console.log('getVehicle successful:', data);
+        return data;
+    } catch (error) {
+        console.error('Login error:', JSON.stringify(error.message));
+        throw error;
+    }
+};
+
 // driverJobs request
 export const driverJobs = async (ID) => {
     console.log('ID', ID)
@@ -25,9 +42,10 @@ export const driverJobs = async (ID) => {
         throw error;
     }
 };
+
 // get checklist request
-export const getChecklist = async (ID) => {
-    console.log('ID', ID)
+export const getChecklist = async () => {
+    
     try {
         const { data } = await axiosInstance.post(`/getCheckLists`);
         console.log('getCheckLists successful:', data);
@@ -69,16 +87,17 @@ export const numberVerify = async (number) => {
 export const submitCheckList = async (list) => {
     try {
         // change the api endpoint here
-        console.log("list", list)
         const form_data = new FormData
         form_data.append("driver_id", list.driver_id)
-        form_data.append("driver_checklist", list.driver_checklist)
-        form_data.append("vehicle_checklist", list.vehicle_checklist)
+        form_data.append("driver_checklist", list.checklistDriver)
+        form_data.append("vehicle_checklist", list.checklistVehicle)
         form_data.append("vehicle_id", list.vehicle_id)
         form_data.append("accreditation_number", list.accreditation_number)
-        form_data.append("register_number", list.register_number)
+        form_data.append("register_number", list.registrationNumber)
         form_data.append("odometer", list.odometer)
         form_data.append("signature", list.signature)
+        console.log("list", list)
+        console.log("form_data", form_data)
         const { data } = await axiosInstanceForm.post(`/createNewCheckList`, form_data);
         // const data = 12345
         console.log('createNewCheckList successful:', data);

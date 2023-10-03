@@ -18,7 +18,7 @@ const SwitchScreen = () => {
     checkChecklistCompletion();
   }, [])
   
-  if (!showChecklist) {
+  if (showChecklist) {
     return (
       <CheckListScreen setShowChecklist={setShowChecklist} />
     );
