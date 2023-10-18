@@ -126,6 +126,21 @@ export const register = async (regObj) => {
     }
 };
 
+// change Acknowledge Status request
+export const changeAcknowledgeStatus = async (statusObj) => {
+    // console.log('statusObj', statusObj.jobID)
+    // console.log(regObj.name, regObj.email)
+    try {
+        const { data } = await axiosInstance.post(`/changeAcknowledgeStatus?acknowledged=${statusObj.acknowledged}&job_id=${statusObj.job_id}`);
+        // const {response, status} = data
+        console.log('changeAcknowledgeStatus :', data);
+        return data;
+    } catch (error) {
+        console.error('changeAcknowledgeStatus :', error);
+        throw error;
+    }
+};
+
 
 export const getRequest = async (endpoint) => {
     try {

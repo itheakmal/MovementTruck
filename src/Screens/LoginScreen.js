@@ -66,7 +66,7 @@ const LoginScreen = () => {
     <SafeAreaView style={styles.loginContainer}>
       <View style={styles.loginContainer}>
         {/* <Image source={require('../assets/truck.png')} style={styles.logo} /> */}
-        <Text style={styles.title}>Trucking Company</Text>
+        <Text style={styles.title}>Login</Text>
         <Input
           // placeholder="Email"
           placeholder="jemal@tctran.com.au"
@@ -84,7 +84,7 @@ const LoginScreen = () => {
           secureTextEntry
           style={styles.input}
         />
-        <Button onPress={handleLogin} disabled={loading}>Login</Button>
+        <Button onPress={handleLogin} disabled={loading}>{loading ? 'Loading...' : 'Login'}</Button>
         {!!(error) && <View style={styles.errorWrapper}>
           <Text style={styles.errorMessage}>{error}</Text>
         </View>}

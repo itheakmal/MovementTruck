@@ -4,8 +4,10 @@ import JobsScreen from './JobsScreen'
 import CheckListScreen from './CheckListScreen'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment-timezone';
+import { useNavigation } from '@react-navigation/native';
 
 const SwitchScreen = () => {
+  const navigation = useNavigation()
   const [showChecklist, setShowChecklist] = useState(false);
 
   useEffect(() => {
@@ -19,9 +21,14 @@ const SwitchScreen = () => {
   }, [])
   
   if (showChecklist) {
+    // navigation.navigate("CheckListScreen",{name:"Checklist"});
+
     return (
       <CheckListScreen setShowChecklist={setShowChecklist} />
     );
+  } else {
+    // navigation.navigate("JobsScreen",{name:"Jobs"},{params:{name:"Jobs"}});
+
   }
   return (
     <JobsScreen />

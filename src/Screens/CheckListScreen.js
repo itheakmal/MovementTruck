@@ -181,110 +181,112 @@ const CheckListScreen = (props) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.checkListcontainer}>
       <ScrollView>
-        <Text style={styles.title}>Welcome, {user?.username}</Text>
-        <View style={styles.checklistHeading}>
-          <Text style={styles.checklistHeadingText}>Drivers Check List:</Text>
-          <ButtonTable children={'Select All'} onPress={() => handleCheckAll(true)} />
-        </View>
-        {!!(checklistDriver) && checklistDriver?.map(checklistItem => (
-          <View key={checklistItem.id} style={styles.checkboxWrap}>
+        {/* <View style={styles.checkListWrapper}> */}
+          <Text style={styles.title}>Welcome, {user?.username}</Text>
+          <View style={styles.checklistHeading}>
+            <Text style={styles.checklistHeadingText}>Drivers Check List:</Text>
+            <ButtonTable children={'Select All'} onPress={() => handleCheckAll(true)} />
+          </View>
+          {!!(checklistDriver) && checklistDriver?.map(checklistItem => (
+            <View key={checklistItem.id} style={styles.checkboxWrap}>
+              <CheckBox
+                tintColors={{
+                  true: 'red',
+                  false: 'black'
+                }}
+                disabled={false}
+                value={checklistItem.value}
+                onValueChange={(newValue) => handleCheckSingle(checklistItem.id, newValue, true)}
+              />
+              <Text style={styles.checkboxText}>{checklistItem.title}</Text>
+            </View>
+          ))}
+          <View style={styles.checklistHeading}>
+            <Text style={styles.checklistHeadingText}>Vehicle Check List:</Text>
+            <ButtonTable children={'Select All'} onPress={() => handleCheckAll(false)} />
+          </View>
+
+          {!!(checklistVehicle) && checklistVehicle?.map(checklistItem => (
+            <View key={checklistItem.id} style={styles.checkboxWrap}>
+              <CheckBox
+                tintColors={{
+                  true: 'red',
+                  false: 'black'
+                }}
+                disabled={false}
+                value={checklistItem.value}
+                onValueChange={(newValue) => handleCheckSingle(checklistItem.id, newValue)}
+              />
+              <Text style={styles.checkboxText}>{checklistItem.title}</Text>
+            </View>
+          ))}
+
+
+          <View style={styles.sectionStarter}>
+            <Text style={styles.label}>Driver’s Full Name</Text>
+            <Input
+              // onChangeText={setEmail}
+              value={user?.username}
+              style={styles.input}
+              editable={false}
+              disabled
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Driver’s Accreditation Number</Text>
+            <Input
+              // onChangeText={setEmail}
+              value={user?.accreditation_number.toString()}
+              style={styles.input}
+              editable={false}
+              disabled
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Vehicle Registration Number </Text>
+            <Input
+              onChangeText={(text) => setFormFields((prev) => ({ ...prev, registrationNumber: text }))}
+              value={formFields.registrationNumber.toString()}
+              style={styles.input}
+              keyboardType='numeric'
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Vehicle Odometer</Text>
+            <Input
+              onChangeText={(text) => onChangeOdometer(text)}
+              value={formFields.username}
+              style={styles.input}
+              maxLength={7}
+              keyboardType='numeric'
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Signature</Text>
+            <Input
+              onChangeText={(text) => setFormFields((prev) => ({ ...prev, signature: text }))}
+              value={formFields.username}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.checkboxWrap}>
             <CheckBox
               tintColors={{
                 true: 'red',
                 false: 'black'
               }}
               disabled={false}
-              value={checklistItem.value}
-              onValueChange={(newValue) => handleCheckSingle(checklistItem.id, newValue, true)}
+              value={formFields.confirm}
+              onValueChange={(newVal) => setFormFields((prev) => ({ ...prev, confirm: newVal }))}
             />
-            <Text style={styles.checkboxText}>{checklistItem.title}</Text>
+            <Text style={styles.checkboxText}>{`I confirm that all the information I have provide is correct.`}</Text>
           </View>
-        ))}
-        <View style={styles.checklistHeading}>
-          <Text style={styles.checklistHeadingText}>Vehicle Check List:</Text>
-          <ButtonTable children={'Select All'} onPress={() => handleCheckAll(false)} />
-        </View>
-
-        {!!(checklistVehicle) && checklistVehicle?.map(checklistItem => (
-          <View key={checklistItem.id} style={styles.checkboxWrap}>
-            <CheckBox
-              tintColors={{
-                true: 'red',
-                false: 'black'
-              }}
-              disabled={false}
-              value={checklistItem.value}
-              onValueChange={(newValue) => handleCheckSingle(checklistItem.id, newValue)}
-            />
-            <Text style={styles.checkboxText}>{checklistItem.title}</Text>
+          <View>
+            <Button children="Submit" onPress={handleSubmit} />
           </View>
-        ))}
-
-
-        <View style={styles.sectionStarter}>
-          <Text style={styles.label}>Driver’s Full Name</Text>
-          <Input
-            // onChangeText={setEmail}
-            value={user?.username}
-            style={styles.input}
-            editable={false}
-            disabled
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Driver’s Accreditation Number</Text>
-          <Input
-            // onChangeText={setEmail}
-            value={user?.accreditation_number.toString()}
-            style={styles.input}
-            editable={false}
-            disabled
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Vehicle Registration Number </Text>
-          <Input
-            onChangeText={(text) => setFormFields((prev) => ({ ...prev, registrationNumber: text }))}
-            value={formFields.registrationNumber.toString()}
-            style={styles.input}
-            keyboardType='numeric'
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Vehicle Odometer</Text>
-          <Input
-            onChangeText={(text) => onChangeOdometer(text)}
-            value={formFields.username}
-            style={styles.input}
-            maxLength={7}
-            keyboardType='numeric'
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Signature</Text>
-          <Input
-            onChangeText={(text) => setFormFields((prev) => ({ ...prev, signature: text }))}
-            value={formFields.username}
-            style={styles.input}
-          />
-        </View>
-        <View style={styles.checkboxWrap}>
-          <CheckBox
-            tintColors={{
-              true: 'red',
-              false: 'black'
-            }}
-            disabled={false}
-            value={formFields.confirm}
-            onValueChange={(newVal) => setFormFields((prev) => ({ ...prev, confirm: newVal }))}
-          />
-          <Text style={styles.checkboxText}>{`I confirm that all the information I have provide is correct.`}</Text>
-        </View>
-        <View>
-          <Button children="Submit" onPress={handleSubmit} />
-        </View>
+        {/* </View> */}
       </ScrollView>
     </SafeAreaView>
   );

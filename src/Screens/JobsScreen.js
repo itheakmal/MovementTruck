@@ -6,12 +6,17 @@ import styles from '../Utils/Styles';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 import Button from '../Components/Button';
 import ButtonTable from '../Components/ButtonTable';
-import { driverJobs } from '../Services/networkRequests';
+import { changeAcknowledgeStatus, driverJobs } from '../Services/networkRequests';
 
 const JobsScreen = () => {
   const { user } = useContext(UserContext);
   const [jobs, setJobs] = useState([])
+  const [statusChange, setStatusChange] = useState("")
+  const [jobStatus, setJobStatus] = useState([])
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
+
     async function fetchJobs() {
       const { response, status } = await driverJobs(user.id)
       if (status === 'error') {
@@ -19,42 +24,34 @@ const JobsScreen = () => {
         console.log('error')
       } else if (status === 'success') {
         console.log('response', response)
-        const formatedJobs = response.jobs.map(job => ([job.id, job.client_name, job.pickup_time, job.pickup_address, job.drop_off_time, job.drop_off_address, job.reason, job.acknowledged, job.job_status]))
+        const formatedJobs = response.jobs.map(job => {
+
+          return [job.id, job.client_name, job.pickup_time, job.pickup_address, job.drop_off_time, job.drop_off_address, job.reason, job.acknowledged === 'No' ? ButtonTable({ children: 'Yes', onPress: () => handlePress(job.id) }) : job.acknowledged, job.job_status]
+        }
+        )
 
         setJobs(formatedJobs)
 
       }
     }
     fetchJobs()
-  }, [])
+    setTimeout(() => (setJobStatus("")), 3000)
 
-  useEffect(() => {
+  }, [statusChange])
 
-  }, [jobs])
-  // sample data for user jobs
-  // const jobs = [
-  //   { id: 1, date: '2023-08-16', origin: 'Lahore', destination: 'Karachi', status: 'In Progress' },
-  //   { id: 2, date: '2023-08-17', origin: 'Karachi', destination: 'Islamabad', status: 'Completed' },
-  //   { id: 3, date: '2023-08-18', origin: 'Islamabad', destination: 'Peshawar', status: 'Pending' },
-  // ];
-  // const Button = ({ children, onPress }) => (
-  //   <TouchableOpacity style={styles.button} onPress={onPress}>
-  //     <Text style={styles.buttonText}>{children}</Text>
-  //   </TouchableOpacity>
-  // );
-  const handlePress = (arg) => {
-    console.log(arg)
+
+  const handlePress = async (id) => {
+    console.log(id)
+    const data = await changeAcknowledgeStatus({ acknowledged: 'Yes', job_id: id })
+    setJobStatus(data.response)
+    console.log('data.response', data.response)
+    if (data.status === 'error') {
+
+    } else {
+      setStatusChange(!statusChange)
+    }
   }
-  // const _jobs = [
-  //   ['1', '2', '3', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-  //   ['1', '2', '3', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })],
-  //   ['a', 'b', 'c', 'a', 'b', 'b', 'b', 'b', ButtonTable({ children: 'Accept', onPress: () => handlePress('u') })]
-  // ];
 
-  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
 
@@ -65,7 +62,7 @@ const JobsScreen = () => {
         console.log('error')
       } else if (status === 'success') {
         console.log('response', response)
-        const formatedJobs = response.jobs.map(job => ([job.id, job.client_name, job.pickup_time, job.pickup_address, job.drop_off_time, job.drop_off_address, job.reason, job.acknowledged, job.job_status]))
+        const formatedJobs = response.jobs.map(job => ([job.id, job.client_name, job.pickup_time, job.pickup_address, job.drop_off_time, job.drop_off_address, job.reason, job.acknowledged === 'No' ? ButtonTable({ children: "Yes", onPress: () => handlePress(job.id) }) : job.acknowledged, job.job_status]))
 
         setJobs(formatedJobs)
 
@@ -104,7 +101,10 @@ const JobsScreen = () => {
         {/* <View style={styles.sized}>
           <Text style={styles.screenTitle}>Welcome, {user.email}</Text>
         </View> */}
-        <StyledTable data={jobs.length ? jobs : []} headers={['Job Number', 'Client Name', 'Pickup Time', 'Pickup Address', 'Drop off Time', 'Drop off Address', 'Reason', 'Acknowledged', 'Job Status']} />
+        <View style={styles.jobsWrapper}>
+          {!!(jobStatus) && <View style={styles.jobStatus}><Text style={styles.jobStatusText}>{jobStatus}</Text></View>}
+          <StyledTable data={jobs.length ? jobs : []} headers={['Job Number', 'Client Name', 'Pickup Time', 'Pickup Address', 'Drop off Time', 'Drop off Address', 'Reason', 'Acknowledged', 'Job Status']} />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

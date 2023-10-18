@@ -6,11 +6,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     textAlign: 'center',
-    color: '#333'
+    color: '#333',
+    padding: 15
   },
+  
   blackText: {
     color: '#333'
   },
@@ -110,7 +112,43 @@ const styles = StyleSheet.create({
   //   fontWeight: 'bold'
   // }
 
+  // Job Screen
+  jobsWrapper: {
+    position: 'relative'
+  },
+  jobStatus: {
+    position: 'absolute',
+    // left: 0,
+    // top: 50,
+    // 
+    width: '100%',
+    // height: 20,
+    zIndex: 999,
+    backgroundColor: '#333',
+  },
+  jobStatusText: {
+    color: '#fff',
+    textAlign: 'center'
+  },
+
   // check list
+  checkListcontainer: {
+    flex: 1,
+    // backgroundColor: '#cd2122',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    textAlign: 'center',
+    color: '#333',
+    padding: 15
+  },
+  // checkListWrapper: {
+  //   flex: 1,
+  //   alignItems: 'stretch',
+  //   justifyContent: 'space-between',
+  //   textAlign: 'center',
+  //   width: '100%',
+  //   backgroundColor: '#dddddd'
+  // },
   checkboxWrap: {
     alignItems: 'center',
     flexDirection: 'row',
