@@ -4,7 +4,7 @@ import styles from '../Utils/Styles';
 
 const ButtonTable = ({ children, onPress }) => (
   <TouchableOpacity style={styles.buttonTable} onPress={onPress}>
-    <Text style={styles.buttonText}>{children}</Text>
+    <Text style={styles.buttonTextTable}>{children}</Text>
   </TouchableOpacity>
 );
 

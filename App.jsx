@@ -16,7 +16,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Login'>
           <Stack.Screen name="Login" component={LoginScreen} options={{
-          title: 'Tucking Company',
+          title: 'Trucking Company',
           headerStyle: {
             backgroundColor: '#333',
           },
@@ -25,7 +25,7 @@ function App() {
             fontWeight: 'bold',
           },
         }} />
-          <Stack.Screen name="Switch" component={SwitchScreen} />
+          <Stack.Screen name="Switch" component={SwitchScreen} options={{headerShown:false}} />
           <Stack.Screen name="Jobs" component={JobsScreen} options={({ route }) => {
             console.log( ' route.params', route.params)
             console.log( ' route.params', route)

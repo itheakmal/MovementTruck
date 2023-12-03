@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 
-  
+
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     color: '#333',
     padding: 15
   },
-  
+
   blackText: {
     color: '#333'
   },
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   buttonTable: {
-    width: 70,
+    width: 'auto',
     height: 40,
     backgroundColor: '#333',
     borderRadius: 5,
@@ -74,9 +74,55 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginLeft: 3
   },
+  buttonTableColor: {
+    width: 'auto',
+    height: 40,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 3,
+    marginTop: 3,
+    marginLeft: 3,
+    backgroundColor: '#333'
+  },
+  buttonTableColorRed: {
+    width: 'auto',
+    height: 40,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 3,
+    marginTop: 3,
+    marginLeft: 3,
+    backgroundColor: '#B71C1C'
+  },
+  buttonTableColorBlue: {
+    width: 'auto',
+    height: 40,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 3,
+    marginTop: 3,
+    marginLeft: 3,
+    backgroundColor: '#2196F3'
+  },
+  buttonAcknowldge: {
+    width: 80,
+    height: 40,
+    backgroundColor: '#cd2122',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  buttonTextTable: {
+    color: '#fff',
+    padding: 5
+    // fontWeight: 'bold',
   },
 
   //Landscape mode
@@ -88,16 +134,20 @@ const styles = StyleSheet.create({
   },
   screenTitle: {
     fontSize: 24,
-    color: '#333'
+    color: '#fff'
   },
   screenText: {
     color: '#333'
   },
   sized: {
-    backgroundColor: '#cd2122',
+    backgroundColor: '#001b5a',
     // height: 10,
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'row',
+    paddingLeft: 10,
+    paddingRight: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   // table: {
   //   borderWidth: 1
@@ -153,10 +203,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     color: '#333'
-    
+
   },
   checkboxItem: {
-    
+
   },
   checkboxText: {
     color: '#333'
@@ -167,7 +217,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    
+
     marginTop: 15,
     marginBottom: 10
   },

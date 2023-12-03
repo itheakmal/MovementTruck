@@ -62,6 +62,24 @@ export const getChecklist = async () => {
     }
 };
 
+// get Vehicles request
+export const getVehicles = async () => {
+    
+    try {
+        const { data, status } = await axiosInstance.post(`/getVehicles`);
+        console.log('getVehicles successful:', data);
+        console.log('status successful:', status);
+        if (data.status === 'success') {
+            return data.data;
+        } else {
+            return []
+        }
+    } catch (error) {
+        console.error('Login error:', JSON.stringify(error.message));
+        throw error;
+    }
+};
+
 // verify Registration Number request
 export const numberVerify = async (number) => {
     try {
@@ -137,6 +155,21 @@ export const changeAcknowledgeStatus = async (statusObj) => {
         return data;
     } catch (error) {
         console.error('changeAcknowledgeStatus :', error);
+        throw error;
+    }
+};
+
+// change Acknowledge Status request
+export const changeJobStatus = async (statusObj) => {
+    // console.log('statusObj', statusObj.jobID)
+    // console.log(regObj.name, regObj.email)
+    try {
+        const { data } = await axiosInstance.post(`/changeStatus?status=${statusObj.status}&job_id=${statusObj.job_id}`);
+        // const {response, status} = data
+        console.log('status :', data);
+        return data;
+    } catch (error) {
+        console.error('status :', error);
         throw error;
     }
 };
