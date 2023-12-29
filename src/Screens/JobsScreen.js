@@ -46,9 +46,31 @@ const JobsScreen = () => {
          * 4FC3F7 blue
          * 9575CD purpule
          * E53935 red
+         * #54FF9F
+#FFC1C1
+ #FFC125
+ #E3A869
+#CAE1FF
+ #E0EEE0
          */
-        
-        const themeColors = ['#FDD835', '#A1887F', '#F06292', '#43A047', '#4FC3F7', '#9575CD', '#E53935']
+
+        response.jobs.sort((a, b) => {
+          // Custom sorting function to move "Unassigned" jobs to the end
+          console.log('a', a)
+          console.log('b', b)
+          const statusA = a.job_status.toLowerCase();
+          const statusB = b.job_status.toLowerCase();
+
+          if (statusA === "unassigned" && statusB !== "unassigned") {
+            return 1;
+          } else if (statusA !== "unassigned" && statusB === "unassigned") {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+
+        const themeColors = ['#54FF9F', '#FFC1C1', '#FFC125', '#E3A869', '#CAE1FF', '#E0EEE0', '#E53935']
         const _jColors = []
         const _jColorsN = []
         const _jobsStatusColors = []
@@ -76,31 +98,31 @@ const JobsScreen = () => {
             case 1.00:
               _jColorsN.push(themeColors[0])
               break;
-          
+
             default:
               break;
           }
 
 
 
-          let tempColor = ''
-          if (index < themeColors.length) {
-            tempColor = themeColors[index]
-          } else {
-            tempColor = themeColors[randomNumber()]
-          }
-          const _jobStatusColor = { pickupTime: job.pickup_time, color: tempColor }
-          if (index !== 0) {
-            const colorDecision = _jobsStatusColors.find(item => item.pickupTime === _jobStatusColor.pickupTime)
-            console.log({ colorDecision })
-            if (colorDecision) {
-              _jobStatusColor.color = colorDecision.color
-            }
-          }
-          _jColors.push(_jobStatusColor.color)
-          _jobsStatusColors.push(_jobStatusColor)
+          // let tempColor = ''
+          // if (index < themeColors.length) {
+          //   tempColor = job.color_code ? job.color_code : themeColors[index]
+          // } else {
+          //   tempColor = job.color_code ? job.color_code : themeColors[randomNumber()]
+          // }
+          // const _jobStatusColor = { pickupTime: job.pickup_time, color: tempColor }
+          // if (index !== 0) {
+          //   const colorDecision = _jobsStatusColors.find(item => item.pickupTime === _jobStatusColor.pickupTime)
+          //   console.log({ colorDecision })
+          //   if (colorDecision) {
+          //     _jobStatusColor.color = colorDecision.color
+          //   }
+          // }
+          _jColors.push(!!(job.color_code) ? job.color_code : themeColors[randomNumber()])
+          // _jobsStatusColors.push(_jobStatusColor)
 
-          if (job.job_status === 'Cancelled') {
+          if (job.job_status.toLowerCase() === 'cancelled' || job.job_status.toLowerCase() === 'unassigned') {
 
             return [<Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: '#333' }}>{job.job_number}</Text>,
             <Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: '#333' }}>{job.client_name}</Text>,
@@ -135,6 +157,12 @@ const JobsScreen = () => {
           });
         }
         setJobColors(_jColors)
+
+
+
+
+
+
         setJobs(formatedJobs)
 
       }
@@ -184,9 +212,9 @@ const JobsScreen = () => {
         buttonText = 'Picked'
         buttonColor = 'buttonTableColorBlue'
         break;
-        case 'picked':
-        case 'pciked':
-          buttonText = 'Dropped',
+      case 'picked':
+      case 'pciked':
+        buttonText = 'Dropped',
           buttonColor = 'buttonTableColorRed'
         break;
       case 'dropped':
@@ -217,9 +245,24 @@ const JobsScreen = () => {
         console.log('error')
       } else if (status === 'success') {
         console.log('response', response)
+        response.jobs.sort((a, b) => {
+          // Custom sorting function to move "Unassigned" jobs to the end
+          console.log('a', a)
+          console.log('b', b)
+          const statusA = a.job_status.toLowerCase();
+          const statusB = b.job_status.toLowerCase();
+
+          if (statusA === "unassigned" && statusB !== "unassigned") {
+            return 1;
+          } else if (statusA !== "unassigned" && statusB === "unassigned") {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
         // const formatedJobs = response.jobs.map(job => ([job.job_number, job.client_name, job.pickup_time, job.pickup_address, job.drop_off_time, job.drop_off_address, job.reason, acknowledgButton(job.acknowledged, job.id), statusButton(job.job_status, job.acknowledged, job.id)]))
         const formatedJobs = response.jobs.map(job => {
-          if (job.job_status === 'Cancelled') {
+          if (job.job_status.toLowerCase() === 'cancelled' || job.job_status.toLowerCase() === 'unassigned') {
 
             return [<Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: '#333' }}>{job.job_number}</Text>,
             <Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: '#333' }}>{job.client_name}</Text>,
