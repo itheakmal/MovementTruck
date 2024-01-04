@@ -10,8 +10,10 @@ import { validateEmail } from '../Utils/Utils';
 import { getVehicle } from '../Services/networkRequests';
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('jemal@tctran.com.au');
-  const [password, setPassword] = useState('Totalcare5');
+  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('jemal@tctran.com.au');
+  // const [password, setPassword] = useState('Totalcare5');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { setUser } = useContext(UserContext);
