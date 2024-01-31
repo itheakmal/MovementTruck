@@ -70,17 +70,17 @@ const LoginScreen = () => {
         {/* <Image source={require('../assets/truck.png')} style={styles.logo} /> */}
         <Text style={styles.title}>Login</Text>
         <Input
-          // placeholder="Email"
-          placeholder="jemal@tctran.com.au"
+          placeholder="Email"
+         // placeholder="jemal@tctran.com.au"
           onChangeText={setEmail}
           value={email}
           style={styles.input}
           inputMode='email'
         />
         <Input
-          // placeholder="Password"
+          placeholder="Password"
           type={'password'}
-          placeholder="Totalcare5"
+          //placeholder="Totalcare5"
           onChangeText={setPassword}
           value={password}
           secureTextEntry

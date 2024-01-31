@@ -5,18 +5,18 @@ const axiosInstanceForm = axios.create({
   // baseURL: 'https://demo.tctran.com.au/en/webservices/',
   headers: {
     'Content-Type': 'multipart/form-data',
-    'Accept': 'application/json'
-  }
+    Accept: 'application/json',
+  },
 });
 
 // Get the navigation object from the useNavigation hook
 // const navigation = useNavigation();
 
 // Add an interceptor to handle 401 Unauthorized responses and navigate to the login screen
-axiosInstanceForm.interceptors.response.use(null, (error) => {
+axiosInstanceForm.interceptors.response.use(null, error => {
   if (error.response?.status === 401) {
     // navigation.navigate('Login');
-    console.log('401')
+    console.log('401');
   }
   return Promise.reject(error);
 });
