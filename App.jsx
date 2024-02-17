@@ -7,6 +7,7 @@ import LoginScreen from './src/Screens/LoginScreen';
 import JobsScreen from './src/Screens/JobsScreen';
 import CheckListScreen from './src/Screens/CheckListScreen';
 import SwitchScreen from './src/Screens/SwitchScreen';
+import { StatusBar } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Login'>
           <Stack.Screen name="Login" component={LoginScreen} options={{
-          title: 'Trucking Company',
+          title: 'Total Care Driver',
           headerStyle: {
             backgroundColor: '#333',
           },
@@ -38,6 +39,7 @@ function App() {
           }} />
         </Stack.Navigator>
       </NavigationContainer>
+      <StatusBar backgroundColor="#333" barStyle="light-content" /> 
     </UserProvider>
   );
 }
