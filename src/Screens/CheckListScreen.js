@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, Text, View, SafeAreaView } from 'react-native';
+import { ScrollView, Text, View, SafeAreaView, StatusBar } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import StyledTable from '../Components/StyledTable';
 import UserContext from '../Contexts/UserContext';
@@ -190,6 +190,7 @@ const CheckListScreen = (props) => {
 
   return (
     <SafeAreaView style={styles.checkListcontainer}>
+      <StatusBar backgroundColor="#333" barStyle="light-content" />
       <ScrollView>
         {/* <View style={styles.checkListWrapper}> */}
         <Text style={styles.title}>Welcome, {user?.username}</Text>

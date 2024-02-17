@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Image, SafeAreaView } from 'react-native';
+import { View, Text, Image, SafeAreaView, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -66,6 +66,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.loginContainer}>
+      <StatusBar backgroundColor="#333" barStyle="light-content" />
       <View style={styles.loginContainer}>
         {/* <Image source={require('../assets/truck.png')} style={styles.logo} /> */}
         <Text style={styles.title}>Login</Text>
