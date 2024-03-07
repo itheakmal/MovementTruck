@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   View,
+  StatusBar,
 } from 'react-native';
 import StyledTable from '../Components/StyledTable';
 import UserContext from '../Contexts/UserContext';
@@ -484,6 +485,7 @@ const JobsScreen = () => {
   // }, []);
   return (
     <SafeAreaView>
+      <StatusBar backgroundColor="#333" barStyle="light-content" />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

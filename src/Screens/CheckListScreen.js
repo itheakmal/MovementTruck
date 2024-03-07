@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, Text, View, SafeAreaView } from 'react-native';
+import { ScrollView, Text, View, SafeAreaView, StatusBar } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import StyledTable from '../Components/StyledTable';
 import UserContext from '../Contexts/UserContext';
@@ -174,22 +174,24 @@ const CheckListScreen = (props) => {
   };
 
   const onChangeOdometer = (text) => {
-    let newText = '';
-    let numbers = '0123456789';
+    // let newText = '';
+    // let numbers = '0123456789';
 
-    for (var i = 0; i < text.length; i++) {
-      if (numbers.indexOf(text[i]) > -1) {
-        newText = newText + text[i];
-      } else {
-        alert("please enter numbers only");
-        return
-      }
-    }
-    setFormFields((prev) => ({ ...prev, odometer: newText }));
+    // for (var i = 0; i < text.length; i++) {
+    //   if (numbers.indexOf(text[i]) > -1) {
+    //     newText = newText + text[i];
+    //   } else {
+    //     alert("please enter numbers only");
+    //     return
+    //   }
+    // }
+    // setFormFields((prev) => ({ ...prev, odometer: newText }));
+    setFormFields((prev) => ({ ...prev, odometer: text }));
   }
 
   return (
     <SafeAreaView style={styles.checkListcontainer}>
+      <StatusBar backgroundColor="#333" barStyle="light-content" />
       <ScrollView>
         {/* <View style={styles.checkListWrapper}> */}
         <Text style={styles.title}>Welcome, {user?.username}</Text>
