@@ -1,34 +1,39 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, Text, View, SafeAreaView, StatusBar } from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {ScrollView, Text, View, SafeAreaView, StatusBar} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import StyledTable from '../Components/StyledTable';
 import UserContext from '../Contexts/UserContext';
 import styles from '../Utils/Styles';
 import Button from '../Components/Button';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ButtonTable from '../Components/ButtonTable';
 import Input from '../Components/Input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SelectList } from 'react-native-dropdown-select-list'
+import {SelectList} from 'react-native-dropdown-select-list';
 
 import moment from 'moment-timezone';
 
-import { getChecklist, getVehicles, numberVerify, submitCheckList } from '../Services/networkRequests';
+import {
+  getChecklist,
+  getVehicles,
+  numberVerify,
+  submitCheckList,
+} from '../Services/networkRequests';
 
-const CheckListScreen = (props) => {
-  const { user } = useContext(UserContext);
-  const [checklist, setChecklist] = useState({})
-  const [checklistDriver, setChecklistDriver] = useState([])
-  const [checklistVehicle, setChecklistVehicle] = useState([])
-  const [toggleCheckBox, setToggleCheckBox] = useState(false)
-  const [driverCheckAll, setDriverCheckAll] = useState(false)
-  const [oldregistration, setOldregistration] = useState(user?.registration)
+const CheckListScreen = props => {
+  const {user} = useContext(UserContext);
+  const [checklist, setChecklist] = useState({});
+  const [checklistDriver, setChecklistDriver] = useState([]);
+  const [checklistVehicle, setChecklistVehicle] = useState([]);
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [driverCheckAll, setDriverCheckAll] = useState(false);
+  const [oldregistration, setOldregistration] = useState(user?.registration);
   const [driverCheck, setDriverCheck] = useState({
     fatigue: false,
     drugs: false,
-    alchohal: false
-  })
-  const [truckCheckAll, setTruckCheckAll] = useState(false)
+    alchohal: false,
+  });
+  const [truckCheckAll, setTruckCheckAll] = useState(false);
   const [truckCheck, setTruckCheck] = useState({
     fluid: false,
     tread: false,
@@ -39,66 +44,78 @@ const CheckListScreen = (props) => {
     camera: false,
     belts: false,
     hydraulic: false,
-    horn: false
-  })
+    horn: false,
+  });
   const [formFields, setFormFields] = useState({
     registrationNumber: 0,
     odometer: '',
     signature: '',
-    confirm: true
-  })
-  const [selected, setSelected] = useState("");
+    confirm: true,
+  });
+  const [selected, setSelected] = useState('');
   const [data, setData] = useState([]);
   const [current, setCurrent] = useState({});
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getChecklist()
-      const vehiclesData = await getVehicles()
+      const data = await getChecklist();
+      const vehiclesData = await getVehicles();
       // console.log('vehiclesData', vehiclesData)
-      const temp = vehiclesData.map((item, index)=>{
+      const temp = vehiclesData.map((item, index) => {
         if (user?.registration === item.car_number_plate) {
-          console.log('current', current)
-          setCurrent({key:item.id, value: item.car_number_plate})
+          console.log('current', current);
+          setCurrent({key: item.id, value: item.car_number_plate});
         }
-        return {key:item.id, value: item.car_number_plate}
-      })
+        return {key: item.id, value: item.car_number_plate};
+      });
       // console.log('temp', temp)
-      setData(temp)
+      setData(temp);
       // console.log(data)
-      const vehicle_checklist = data.vehicle_checklist.map((item, index) => ({ title: item, id: index, value: false }))
-      const driver_checklist = data.driver_checklist.map((item, index) => ({ title: item, id: index, value: false }))
-      setChecklist({ vehicle_checklist, driver_checklist })
-      setChecklistDriver(driver_checklist)
-      setChecklistVehicle(vehicle_checklist)
+      const vehicle_checklist = data.vehicle_checklist.map((item, index) => ({
+        title: item,
+        id: index,
+        value: false,
+      }));
+      const driver_checklist = data.driver_checklist.map((item, index) => ({
+        title: item,
+        id: index,
+        value: false,
+      }));
+      setChecklist({vehicle_checklist, driver_checklist});
+      setChecklistDriver(driver_checklist);
+      setChecklistVehicle(vehicle_checklist);
       // console.log('driver_checklist', s)
-    }
-    fetchData()
+    };
+    fetchData();
     // formFields.registrationNumber= user.registration
-    setFormFields((prev) => ({ ...prev, registrationNumber: user?.registration }))
-    console.log('user', user)
-  }, [])
+    setFormFields(prev => ({...prev, registrationNumber: user?.registration}));
+    console.log('user', user);
+  }, []);
 
   const handleChecklistCompletion = async () => {
     const currentDate = moment().tz('Australia/Sydney').format('YYYY-MM-DD');
     await AsyncStorage.setItem('checklistCompletedDate', currentDate);
-    console.log('currentDate', currentDate)
+    console.log('currentDate', currentDate);
     props.setShowChecklist(false);
   };
   const handleSubmit = async () => {
     // Handle form submission here
     // let notChecked = []
-    console.log('driverCheck========>', checklistDriver)
-    console.log('checklistVehicle', checklistVehicle)
-    const notCheckedDriver = Object.values(checklistDriver).filter(item => !item)
-    const notCheckedTruck = Object.values(checklistVehicle).filter(item => !item)
+    console.log('driverCheck========>', checklistDriver);
+    console.log('checklistVehicle', checklistVehicle);
+    const notCheckedDriver = Object.values(checklistDriver).filter(
+      item => !item,
+    );
+    const notCheckedTruck = Object.values(checklistVehicle).filter(
+      item => !item,
+    );
     // const notCheckedTruck = truckCheck.filter(item=>!item)
     if (notCheckedDriver.length) {
-      alert('Please select all Driver checkboxes')
-      return
+      alert('Please select all Driver checkboxes');
+      return;
     }
     if (notCheckedTruck.length) {
-      alert('Please select all Truck checkboxes')
-      return
+      alert('Please select all Truck checkboxes');
+      return;
     }
 
     if (oldregistration !== formFields.registrationNumber) {
@@ -110,35 +127,43 @@ const CheckListScreen = (props) => {
         //   return
         // }
       } else {
-        alert('Registration Number is required')
-        return
+        alert('Registration Number is required');
+        return;
       }
-
     }
-    if (!formFields.confirm || formFields.odometer === '' || formFields.signature === '') {
-      alert('Please fill in all the fields')
-      return
+    if (
+      !formFields.confirm ||
+      formFields.odometer === '' ||
+      formFields.signature === ''
+    ) {
+      alert('Please fill in all the fields');
+      return;
     }
 
-    const formSubmit = await submitCheckList({ checklistDriver:checklistDriver.map(item=>item.title), checklistVehicle:checklistVehicle.map(item=>item.title), ...formFields, driver_id: user.id, vehicle_id: user.vehicle_id, accreditation_number: user.accreditation_number })
+    const formSubmit = await submitCheckList({
+      checklistDriver: checklistDriver.map(item => item.title),
+      checklistVehicle: checklistVehicle.map(item => item.title),
+      ...formFields,
+      driver_id: user.id,
+      vehicle_id: user.vehicle_id,
+      accreditation_number: user.accreditation_number,
+    });
     if (formSubmit) {
-
-      handleChecklistCompletion()
+      handleChecklistCompletion();
     } else {
-      alert('Some error occured, please try again')
-      return
+      alert('Some error occured, please try again');
+      return;
     }
     // navigation.navigate('Jobs');
-
   };
-  const handleCheckAll = (arg) => {
+  const handleCheckAll = arg => {
     // Handle form submission here
     if (arg) {
       const newState = checklistDriver.map(obj => {
-        return { ...obj, value: !driverCheckAll };
+        return {...obj, value: !driverCheckAll};
       });
       setChecklistDriver(newState);
-      setDriverCheckAll(!driverCheckAll)
+      setDriverCheckAll(!driverCheckAll);
       // setDriverCheck({
       //   fatigue: !driverCheckAll,
       //   drugs: !driverCheckAll,
@@ -146,10 +171,10 @@ const CheckListScreen = (props) => {
       // })
     } else {
       const newState = checklistVehicle.map(obj => {
-        return { ...obj, value: !truckCheckAll };
+        return {...obj, value: !truckCheckAll};
       });
       setChecklistVehicle(newState);
-      setTruckCheckAll(!truckCheckAll)
+      setTruckCheckAll(!truckCheckAll);
     }
   };
 
@@ -157,7 +182,7 @@ const CheckListScreen = (props) => {
     if (driver) {
       const newState = checklistDriver.map(obj => {
         if (obj.id === param) {
-          return { ...obj, value: newValue };
+          return {...obj, value: newValue};
         }
         return obj;
       });
@@ -165,15 +190,15 @@ const CheckListScreen = (props) => {
     } else {
       const newState = checklistVehicle.map(obj => {
         if (obj.id === param) {
-          return { ...obj, value: newValue };
+          return {...obj, value: newValue};
         }
         return obj;
       });
-      setChecklistVehicle(newState)
+      setChecklistVehicle(newState);
     }
   };
 
-  const onChangeOdometer = (text) => {
+  const onChangeOdometer = text => {
     // let newText = '';
     // let numbers = '0123456789';
 
@@ -186,53 +211,64 @@ const CheckListScreen = (props) => {
     //   }
     // }
     // setFormFields((prev) => ({ ...prev, odometer: newText }));
-    setFormFields((prev) => ({ ...prev, odometer: text }));
-  }
+    setFormFields(prev => ({...prev, odometer: text}));
+  };
 
   return (
     <SafeAreaView style={styles.checkListcontainer}>
-      <StatusBar backgroundColor="#333" barStyle="light-content" />
-      <ScrollView>
+      <StatusBar backgroundColor="#333" barStyle="dark-content" />
+      <ScrollView style={{padding: 12}}>
         {/* <View style={styles.checkListWrapper}> */}
         <Text style={styles.title}>Welcome, {user?.username}</Text>
         <View style={styles.checklistHeading}>
           <Text style={styles.checklistHeadingText}>Drivers Check List:</Text>
-          <ButtonTable children={'Select All'} onPress={() => handleCheckAll(true)} />
+          <ButtonTable
+            children={'Select All'}
+            onPress={() => handleCheckAll(true)}
+          />
         </View>
-        {!!(checklistDriver) && checklistDriver?.map(checklistItem => (
-          <View key={checklistItem.id} style={styles.checkboxWrap}>
-            <CheckBox
-              tintColors={{
-                true: 'red',
-                false: 'black'
-              }}
-              disabled={false}
-              value={checklistItem.value}
-              onValueChange={(newValue) => handleCheckSingle(checklistItem.id, newValue, true)}
-            />
-            <Text style={styles.checkboxText}>{checklistItem.title}</Text>
-          </View>
-        ))}
+        {!!checklistDriver &&
+          checklistDriver?.map(checklistItem => (
+            <View key={checklistItem.id} style={styles.checkboxWrap}>
+              <CheckBox
+                tintColors={{
+                  true: 'red',
+                  false: 'black',
+                }}
+                disabled={false}
+                value={checklistItem.value}
+                onValueChange={newValue =>
+                  handleCheckSingle(checklistItem.id, newValue, true)
+                }
+              />
+              <Text style={[styles.checkboxText]}>{checklistItem.title}</Text>
+            </View>
+          ))}
         <View style={styles.checklistHeading}>
           <Text style={styles.checklistHeadingText}>Vehicle Check List:</Text>
-          <ButtonTable children={'Select All'} onPress={() => handleCheckAll(false)} />
+          <ButtonTable
+            children={'Select All'}
+            onPress={() => handleCheckAll(false)}
+          />
         </View>
 
-        {!!(checklistVehicle) && checklistVehicle?.map(checklistItem => (
-          <View key={checklistItem.id} style={styles.checkboxWrap}>
-            <CheckBox
-              tintColors={{
-                true: 'red',
-                false: 'black'
-              }}
-              disabled={false}
-              value={checklistItem.value}
-              onValueChange={(newValue) => handleCheckSingle(checklistItem.id, newValue)}
-            />
-            <Text style={styles.checkboxText}>{checklistItem.title}</Text>
-          </View>
-        ))}
-
+        {!!checklistVehicle &&
+          checklistVehicle?.map(checklistItem => (
+            <View key={checklistItem.id} style={styles.checkboxWrap}>
+              <CheckBox
+                tintColors={{
+                  true: 'red',
+                  false: 'black',
+                }}
+                disabled={false}
+                value={checklistItem.value}
+                onValueChange={newValue =>
+                  handleCheckSingle(checklistItem.id, newValue)
+                }
+              />
+              <Text style={styles.checkboxText}>{checklistItem.title}</Text>
+            </View>
+          ))}
 
         <View style={styles.sectionStarter}>
           <Text style={styles.label}>Driver’s Full Name</Text>
@@ -256,15 +292,19 @@ const CheckListScreen = (props) => {
         </View>
         <View>
           <Text style={styles.label}>Vehicle Registration Number </Text>
+
           <SelectList
             inputStyles={{color: '#333'}}
             dropdownTextStyles={{color: '#333'}}
-            setSelected={(val) => setFormFields((prev) => ({ ...prev, registrationNumber: val }))}
+            setSelected={val =>
+              setFormFields(prev => ({...prev, registrationNumber: val}))
+            }
             data={data}
             save="value"
             defaultOption={current}
             // style={styles.input}
           />
+
           {/* <Input
             onChangeText={(text) => setFormFields((prev) => ({ ...prev, registrationNumber: text }))}
             value={formFields.registrationNumber.toString()}
@@ -273,19 +313,22 @@ const CheckListScreen = (props) => {
           /> */}
         </View>
         <View>
-          <Text style={styles.label}>Vehicle Odometer</Text>
+          <Text style={[styles.label, {marginTop: 10}]}>Vehicle Odometer</Text>
+
           <Input
-            onChangeText={(text) => onChangeOdometer(text)}
+            onChangeText={text => onChangeOdometer(text)}
             value={formFields.username}
             style={styles.input}
             maxLength={7}
-            keyboardType='numeric'
+            keyboardType="numeric"
           />
         </View>
         <View>
           <Text style={styles.label}>Signature</Text>
           <Input
-            onChangeText={(text) => setFormFields((prev) => ({ ...prev, signature: text }))}
+            onChangeText={text =>
+              setFormFields(prev => ({...prev, signature: text}))
+            }
             value={formFields.username}
             style={styles.input}
           />
@@ -294,15 +337,19 @@ const CheckListScreen = (props) => {
           <CheckBox
             tintColors={{
               true: 'red',
-              false: 'black'
+              false: 'black',
             }}
             disabled={false}
             value={formFields.confirm}
-            onValueChange={(newVal) => setFormFields((prev) => ({ ...prev, confirm: newVal }))}
+            onValueChange={newVal =>
+              setFormFields(prev => ({...prev, confirm: newVal}))
+            }
           />
-          <Text style={styles.checkboxText}>{`I confirm that all the information I have provide is correct.`}</Text>
+          <Text style={styles.checkboxText}>
+            {'I confirm that all the information I have provide is correct.'}
+          </Text>
         </View>
-        <View>
+        <View style={{paddingBottom: 20}}>
           <Button children="Submit" onPress={handleSubmit} />
         </View>
         {/* </View> */}
